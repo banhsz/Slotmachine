@@ -13,14 +13,17 @@ namespace Slotmachine
     public partial class Form1 : Form
     {
         private List<Symbol> symbols;
-        private Dictionary<int,PictureBox> tiles;
+        private Dictionary<int, PictureBox> tiles;
+        List<String> tickets;
+        Random rand;
 
         public Form1()
         {
             InitializeComponent();
             InitSymbols();
             InitTiles();
-
+            InitTickets();
+            rand = new Random();
         }
 
         public void InitSymbols()
@@ -51,22 +54,22 @@ namespace Slotmachine
         public void InitTiles()
         {
             //Tiles in panels
-            tiles = new Dictionary<int,PictureBox>();
-            tiles.Add(1,pictureBox1);
-            tiles.Add(2,pictureBox2);
-            tiles.Add(3,pictureBox3);
-            tiles.Add(4,pictureBox4);
-            tiles.Add(5,pictureBox5);
-            tiles.Add(6,pictureBox6);
-            tiles.Add(7,pictureBox7);
-            tiles.Add(8,pictureBox8);
-            tiles.Add(9,pictureBox9);
-            tiles.Add(10,pictureBox10);
-            tiles.Add(11,pictureBox11);
-            tiles.Add(12,pictureBox12);
-            tiles.Add(13,pictureBox13);
-            tiles.Add(14,pictureBox14);
-            tiles.Add(15,pictureBox15);
+            tiles = new Dictionary<int, PictureBox>();
+            tiles.Add(1, pictureBox1);
+            tiles.Add(2, pictureBox2);
+            tiles.Add(3, pictureBox3);
+            tiles.Add(4, pictureBox4);
+            tiles.Add(5, pictureBox5);
+            tiles.Add(6, pictureBox6);
+            tiles.Add(7, pictureBox7);
+            tiles.Add(8, pictureBox8);
+            tiles.Add(9, pictureBox9);
+            tiles.Add(10, pictureBox10);
+            tiles.Add(11, pictureBox11);
+            tiles.Add(12, pictureBox12);
+            tiles.Add(13, pictureBox13);
+            tiles.Add(14, pictureBox14);
+            tiles.Add(15, pictureBox15);
             //Tiles picture fit mode
             foreach (KeyValuePair<int, PictureBox> item in tiles)
             {
@@ -74,15 +77,38 @@ namespace Slotmachine
             }
 
         }
+        public void InitTickets()
+        {
+            //We fill a list with tickets that represent the symbols
+            //Each symbol has 1000/payout5 tickets. Rare symbol -> less tickets
+            tickets = new List<string>();
+            foreach(Symbol item in symbols)
+            {
+                for (int i = 0; i < Math.Round(1000/item.Payout5); i++)
+                {
+                    tickets.Add(item.Name);
+                }
+            }
+            /*
+            foreach(String item in tickets)
+            {
+                Console.WriteLine(item);
+            }
+            */
+        }
         private void button1_MouseClick(object sender, MouseEventArgs e)
         {
             Spin();
         }
+
         public void Spin()
         {
             foreach (KeyValuePair<int, PictureBox> item in tiles)
             {
-                item.Value.Image = Image.FromFile("jack.jpg");
+                //We randomly select a ticket and set the current tile to the symbol that ticket belongs to
+                int ticket = rand.Next(0,tickets.Count());
+                String symbol = tickets[ticket];
+                item.Value.Image = Image.FromFile(symbol + ".jpg");
             }
         }
     }
