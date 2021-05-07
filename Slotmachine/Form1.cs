@@ -14,8 +14,8 @@ namespace Slotmachine
     {
         private List<Symbol> symbols;
         private Dictionary<int, PictureBox> tiles;
-        List<String> tickets;
-        Random rand;
+        private List<String> tickets;
+        private Random rand;
 
         public Form1()
         {
@@ -74,6 +74,7 @@ namespace Slotmachine
             foreach (KeyValuePair<int, PictureBox> item in tiles)
             {
                 item.Value.SizeMode = PictureBoxSizeMode.Zoom;
+                item.Value.Image = Image.FromFile("loading.jpg");
             }
 
         }
@@ -99,20 +100,37 @@ namespace Slotmachine
         private void button1_MouseClick(object sender, MouseEventArgs e)
         {
             Spin();
-            RevealTiles();
+            //RevealTiles();
         }
-        public void Spin()
+        public async void Spin()
         {
+            //Clear previous spin
             foreach (KeyValuePair<int, PictureBox> item in tiles)
             {
-                item.Value.Visible = false;
-                //We randomly select a ticket and set the current tile to the symbol that ticket belongs to
+                item.Value.Image = Image.FromFile("loading.jpg");
+            }
+
+            //Generate next roll. i = coloumn
+            for (int i = 0; i < 5; i++)
+            {
+                //item.Value.Visible = false;
+                //We randomly select tickets and set the current tiles of the current coloumn(i)
                 int ticket = rand.Next(0, tickets.Count());
                 String symbol = tickets[ticket];
-                item.Value.Image = Image.FromFile(symbol + ".jpg");
-                
+                tiles[1 + i].Image = Image.FromFile(symbol + ".jpg");
+
+                ticket = rand.Next(0, tickets.Count());
+                symbol = tickets[ticket];
+                tiles[6 + i].Image = Image.FromFile(symbol + ".jpg");
+
+                ticket = rand.Next(0, tickets.Count());
+                symbol = tickets[ticket];
+                tiles[11 + i].Image = Image.FromFile(symbol + ".jpg");
+                await Task.Delay(50);
             }
         }
+
+        /*
         public async void RevealTiles()
         {
             for (int i = 0; i < 5; i++)
@@ -123,5 +141,6 @@ namespace Slotmachine
                 await Task.Delay(300);
             }
         }
+        */
     }
 }
