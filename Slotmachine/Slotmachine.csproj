@@ -96,6 +96,9 @@
     <Content Include="king.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="loading.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="pink.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

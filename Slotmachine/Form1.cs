@@ -82,9 +82,9 @@ namespace Slotmachine
             //We fill a list with tickets that represent the symbols
             //Each symbol has 1000/payout5 tickets. Rare symbol -> less tickets
             tickets = new List<string>();
-            foreach(Symbol item in symbols)
+            foreach (Symbol item in symbols)
             {
-                for (int i = 0; i < Math.Round(1000/item.Payout5); i++)
+                for (int i = 0; i < Math.Round(1000 / item.Payout5); i++)
                 {
                     tickets.Add(item.Name);
                 }
@@ -99,16 +99,28 @@ namespace Slotmachine
         private void button1_MouseClick(object sender, MouseEventArgs e)
         {
             Spin();
+            RevealTiles();
         }
-
         public void Spin()
         {
             foreach (KeyValuePair<int, PictureBox> item in tiles)
             {
+                item.Value.Visible = false;
                 //We randomly select a ticket and set the current tile to the symbol that ticket belongs to
-                int ticket = rand.Next(0,tickets.Count());
+                int ticket = rand.Next(0, tickets.Count());
                 String symbol = tickets[ticket];
                 item.Value.Image = Image.FromFile(symbol + ".jpg");
+                
+            }
+        }
+        public async void RevealTiles()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                tiles[1+i].Visible = true;
+                tiles[6+i].Visible = true;
+                tiles[11+i].Visible = true;
+                await Task.Delay(300);
             }
         }
     }
