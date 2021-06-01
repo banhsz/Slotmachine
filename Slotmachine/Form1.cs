@@ -14,8 +14,9 @@ namespace Slotmachine
     {
         private List<Symbol> symbols;
         private Dictionary<int, PictureBox> tiles;
-        private List<String> tickets;
+        private List<Symbol> tickets;
         private Random rand;
+        private Symbol[,] board;
 
         public Form1()
         {
@@ -30,18 +31,18 @@ namespace Slotmachine
         {
             symbols = new List<Symbol>();
             //commons
-            symbols.Add(new Symbol("ten", 0, 0.5, 5, 10));
-            symbols.Add(new Symbol("jack", 0, 0.5, 5, 12.5));
-            symbols.Add(new Symbol("queen", 0, 0.5, 5, 15));
-            symbols.Add(new Symbol("king", 0, 0.8, 6, 20));
-            symbols.Add(new Symbol("ace", 0, 0.8, 6, 25));
+            symbols.Add(new Symbol(0,"ten", 0, 0.5, 5, 10));
+            symbols.Add(new Symbol(1,"jack", 0, 0.5, 5, 12.5));
+            symbols.Add(new Symbol(2,"queen", 0, 0.5, 5, 15));
+            symbols.Add(new Symbol(3,"king", 0, 0.8, 6, 20));
+            symbols.Add(new Symbol(4,"ace", 0, 0.8, 6, 25));
 
             //rares
-            symbols.Add(new Symbol("blue", 0.2, 1, 7, 50));
-            symbols.Add(new Symbol("purple", 0.3, 1.2, 7.5, 75));
-            symbols.Add(new Symbol("pink", 0.4, 1.4, 8, 100));
-            symbols.Add(new Symbol("red", 0.5, 1.6, 9, 150));
-            symbols.Add(new Symbol("gold", 1, 2, 10, 500));
+            symbols.Add(new Symbol(5,"blue", 0.2, 1, 7, 50));
+            symbols.Add(new Symbol(6,"purple", 0.3, 1.2, 7.5, 75));
+            symbols.Add(new Symbol(7,"pink", 0.4, 1.4, 8, 100));
+            symbols.Add(new Symbol(8,"red", 0.5, 1.6, 9, 150));
+            symbols.Add(new Symbol(9,"gold", 1, 2, 10, 500));
 
             //Show all symbol data in console
             /*
@@ -82,12 +83,12 @@ namespace Slotmachine
         {
             //We fill a list with tickets that represent the symbols
             //Each symbol has 1000/payout5 tickets. Rare symbol -> less tickets
-            tickets = new List<string>();
+            tickets = new List<Symbol>();
             foreach (Symbol item in symbols)
             {
                 for (int i = 0; i < Math.Round(1000 / item.Payout5); i++)
                 {
-                    tickets.Add(item.Name);
+                    tickets.Add(item);
                 }
             }
             /*
@@ -100,7 +101,6 @@ namespace Slotmachine
         private void button1_MouseClick(object sender, MouseEventArgs e)
         {
             Spin();
-            //RevealTiles();
         }
         public async void Spin()
         {
@@ -109,38 +109,27 @@ namespace Slotmachine
             {
                 item.Value.Image = Image.FromFile("loading.jpg");
             }
+            board = new Symbol[5, 3];
 
             //Generate next roll. i = coloumn
             for (int i = 0; i < 5; i++)
             {
                 //item.Value.Visible = false;
-                //We randomly select tickets and set the current tiles of the current coloumn(i)
+                //We randomly select tickets and set the current tiles of the current coloumn(i). also store the values in out symbol matrix
                 int ticket = rand.Next(0, tickets.Count());
-                String symbol = tickets[ticket];
-                tiles[1 + i].Image = Image.FromFile(symbol + ".jpg");
+                Symbol symbol = tickets[ticket];
+                tiles[1 + i].Image = Image.FromFile(symbol.Name + ".jpg");
+                //board[i, i + 1] = symbol;
 
                 ticket = rand.Next(0, tickets.Count());
                 symbol = tickets[ticket];
-                tiles[6 + i].Image = Image.FromFile(symbol + ".jpg");
+                tiles[6 + i].Image = Image.FromFile(symbol.Name + ".jpg");
 
                 ticket = rand.Next(0, tickets.Count());
                 symbol = tickets[ticket];
-                tiles[11 + i].Image = Image.FromFile(symbol + ".jpg");
-                await Task.Delay(50);
+                tiles[11 + i].Image = Image.FromFile(symbol.Name + ".jpg");
+                await Task.Delay(100);
             }
         }
-
-        /*
-        public async void RevealTiles()
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                tiles[1+i].Visible = true;
-                tiles[6+i].Visible = true;
-                tiles[11+i].Visible = true;
-                await Task.Delay(300);
-            }
-        }
-        */
     }
 }
