@@ -15,7 +15,7 @@ namespace Slotmachine
         private double payout4;
         private double payout5;
 
-         public int Id { get => id; set => id = value; }
+        public int Id { get => id; set => id = value; }
         public string Name { get => name; set => name = value; }
         public double Payout2 { get => payout2; set => payout2 = value; }
         public double Payout3 { get => payout3; set => payout3 = value; }
