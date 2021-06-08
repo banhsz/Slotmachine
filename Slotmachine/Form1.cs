@@ -23,6 +23,7 @@ namespace Slotmachine
         private List<Coords[]> winlines;
         private double bet;
         private double balance;
+        private string confirm;
 
         public Form1()
         {
@@ -34,9 +35,11 @@ namespace Slotmachine
             rand = new Random();
 
             bet = 50;
-            balance = 10000;
+            balance = 100000;
             labelBet.Text = String.Format("{0}", 50);
             labelBalance.Text = String.Format("{0}",balance);
+
+            confirm = "";
         }
 
         public void InitSymbols()
@@ -145,6 +148,8 @@ namespace Slotmachine
         {
             if (balance-bet>=0)
             {
+                confirm = "";
+
                 //Take away bet
                 balance -= bet;
                 labelBalance.Text = String.Format("{0}",balance);
@@ -193,6 +198,8 @@ namespace Slotmachine
                 //payout lines
                 int lineIndex = 1;
                 double totalPayout = 0;
+                Console.WriteLine("Bet: " + bet);
+                confirm += "Bet: " + bet + "\n\n";
                 foreach (var item in winlines)
                 {
                     int comboLength = 1;
@@ -211,43 +218,59 @@ namespace Slotmachine
                         }
                     }
                     Console.WriteLine("Line " + lineIndex);
-                    Console.WriteLine("Combo Symbbol:{0}, Combo length: {1}", comboSymbol.Name, comboLength);
+                    confirm += "Line " + lineIndex + "\n";
+                    Console.WriteLine("Combo Symbol: {0}, Combo length: {1}", comboSymbol.Name, comboLength);
+                    confirm += String.Format("Combo Symbol: {0}, Combo length: {1}\n", comboSymbol.Name, comboLength);
+
                     double linePayout = 0;
                     switch (comboLength)
                     {
                         case 1:
                             Console.WriteLine("Multiplier: 0");
+                            confirm += String.Format("Multiplier: 0\n");
                             break;
                         case 2:
                             Console.WriteLine("Multiplier: {0}", comboSymbol.Payout2);
+                            confirm += String.Format("Multiplier: {0}\n", comboSymbol.Payout2);
                             linePayout = bet * 1.00 * comboSymbol.Payout2; 
                             break;
                         case 3:
                             Console.WriteLine("Multiplier: {0}", comboSymbol.Payout3);
+                            confirm += String.Format("Multiplier: {0}\n", comboSymbol.Payout3);
                             linePayout = bet * 1.00 * comboSymbol.Payout3;
                             break;
                         case 4:
                             Console.WriteLine("Multiplier: {0}", comboSymbol.Payout4);
+                            confirm += String.Format("Multiplier: {0}\n", comboSymbol.Payout4);
                             linePayout = bet * 1.00 * comboSymbol.Payout4;
                             break;
                         case 5:
                             Console.WriteLine("Multiplier: {0}", comboSymbol.Payout5);
+                            confirm += String.Format("Multiplier: {0}\n", comboSymbol.Payout5);
                             linePayout = bet * 1.00 * comboSymbol.Payout5;
                             break;
                         default:
                             break;
                     }
                     Console.WriteLine("Line payout: " + linePayout);
+                    confirm += String.Format("Line payout: " + linePayout + "\n\n");
                     totalPayout += linePayout;
                     Console.WriteLine();
                     lineIndex++;
                 }
                 Console.WriteLine("Total win: " + totalPayout);
+                confirm += String.Format("Total win: " + totalPayout + "\n");
                 labelWin.Text = String.Format("You won {0}", totalPayout);
 
                 //give win
                 balance += totalPayout;
                 labelBalance.Text = String.Format("{0}", balance);
+
+                //if confirm invisible make it visible
+                if (buttonConfirm.Visible == false)
+                {
+                    buttonConfirm.Visible = true;
+                }
             }
             else
             {
@@ -270,6 +293,17 @@ namespace Slotmachine
                 bet += 50;
                 labelBet.Text = String.Format("{0}", bet);
             }
+        }
+
+        private void buttonConfirm_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(confirm, "Information");
+        }
+
+        private void buttonHelp_Click(object sender, EventArgs e)
+        {
+            Help form = new Help();
+            form.Show();
         }
     }
 }

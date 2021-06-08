@@ -53,6 +53,9 @@ namespace Slotmachine
             this.buttonLower = new System.Windows.Forms.Button();
             this.buttonHigher = new System.Windows.Forms.Button();
             this.labelWin = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.buttonHelp = new System.Windows.Forms.Button();
+            this.buttonConfirm = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox14)).BeginInit();
@@ -69,6 +72,7 @@ namespace Slotmachine
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -216,9 +220,9 @@ namespace Slotmachine
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.button1.Location = new System.Drawing.Point(840, 648);
+            this.button1.Location = new System.Drawing.Point(208, 3);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(204, 100);
+            this.button1.Size = new System.Drawing.Size(200, 100);
             this.button1.TabIndex = 1;
             this.button1.Text = "SPIN";
             this.button1.UseVisualStyleBackColor = true;
@@ -247,7 +251,7 @@ namespace Slotmachine
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label4.Location = new System.Drawing.Point(649, 657);
+            this.label4.Location = new System.Drawing.Point(20, 11);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(66, 33);
             this.label4.TabIndex = 4;
@@ -257,7 +261,7 @@ namespace Slotmachine
             // 
             this.labelBet.AutoSize = true;
             this.labelBet.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.labelBet.Location = new System.Drawing.Point(721, 657);
+            this.labelBet.Location = new System.Drawing.Point(92, 11);
             this.labelBet.Name = "labelBet";
             this.labelBet.Size = new System.Drawing.Size(0, 37);
             this.labelBet.TabIndex = 5;
@@ -266,7 +270,7 @@ namespace Slotmachine
             // buttonLower
             // 
             this.buttonLower.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.buttonLower.Location = new System.Drawing.Point(728, 706);
+            this.buttonLower.Location = new System.Drawing.Point(110, 60);
             this.buttonLower.Name = "buttonLower";
             this.buttonLower.Size = new System.Drawing.Size(57, 42);
             this.buttonLower.TabIndex = 6;
@@ -277,7 +281,7 @@ namespace Slotmachine
             // buttonHigher
             // 
             this.buttonHigher.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.buttonHigher.Location = new System.Drawing.Point(655, 706);
+            this.buttonHigher.Location = new System.Drawing.Point(26, 61);
             this.buttonHigher.Name = "buttonHigher";
             this.buttonHigher.Size = new System.Drawing.Size(57, 42);
             this.buttonHigher.TabIndex = 7;
@@ -289,24 +293,56 @@ namespace Slotmachine
             // 
             this.labelWin.AutoSize = true;
             this.labelWin.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.labelWin.Location = new System.Drawing.Point(12, 719);
+            this.labelWin.Location = new System.Drawing.Point(22, 698);
             this.labelWin.Name = "labelWin";
             this.labelWin.Size = new System.Drawing.Size(0, 55);
             this.labelWin.TabIndex = 8;
+            // 
+            // panel2
+            // 
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.label4);
+            this.panel2.Controls.Add(this.labelBet);
+            this.panel2.Controls.Add(this.buttonHigher);
+            this.panel2.Controls.Add(this.buttonLower);
+            this.panel2.Controls.Add(this.button1);
+            this.panel2.Location = new System.Drawing.Point(632, 648);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(412, 109);
+            this.panel2.TabIndex = 10;
+            // 
+            // buttonHelp
+            // 
+            this.buttonHelp.Location = new System.Drawing.Point(467, 648);
+            this.buttonHelp.Name = "buttonHelp";
+            this.buttonHelp.Size = new System.Drawing.Size(128, 49);
+            this.buttonHelp.TabIndex = 11;
+            this.buttonHelp.Text = "Help";
+            this.buttonHelp.UseVisualStyleBackColor = true;
+            this.buttonHelp.Click += new System.EventHandler(this.buttonHelp_Click);
+            // 
+            // buttonConfirm
+            // 
+            this.buttonConfirm.Location = new System.Drawing.Point(467, 708);
+            this.buttonConfirm.Name = "buttonConfirm";
+            this.buttonConfirm.Size = new System.Drawing.Size(128, 49);
+            this.buttonConfirm.TabIndex = 9;
+            this.buttonConfirm.Text = "Confirm last spin";
+            this.buttonConfirm.UseVisualStyleBackColor = true;
+            this.buttonConfirm.Visible = false;
+            this.buttonConfirm.Click += new System.EventHandler(this.buttonConfirm_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1058, 783);
+            this.ClientSize = new System.Drawing.Size(1058, 769);
+            this.Controls.Add(this.buttonHelp);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.buttonConfirm);
             this.Controls.Add(this.labelWin);
-            this.Controls.Add(this.buttonHigher);
-            this.Controls.Add(this.buttonLower);
-            this.Controls.Add(this.labelBet);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.labelBalance);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -327,6 +363,8 @@ namespace Slotmachine
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -358,6 +396,9 @@ namespace Slotmachine
         private System.Windows.Forms.PictureBox pictureBox7;
         private System.Windows.Forms.PictureBox pictureBox6;
         private System.Windows.Forms.Label labelWin;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button buttonHelp;
+        private System.Windows.Forms.Button buttonConfirm;
     }
 }
 
