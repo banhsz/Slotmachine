@@ -12,11 +12,16 @@ namespace Slotmachine
 {
     public partial class Form1 : Form
     {
+        //visuals
         private List<Symbol> symbols;
         private Dictionary<int, PictureBox> tiles;
+
+        //logic
         private List<Symbol> tickets;
         private Random rand;
         private Symbol[,] board;
+        private List<Coords[]> winlines;
+        private double bet = 100;
 
         public Form1()
         {
@@ -24,6 +29,7 @@ namespace Slotmachine
             InitSymbols();
             InitTiles();
             InitTickets();
+            InitWinLines();
             rand = new Random();
         }
 
@@ -98,18 +104,46 @@ namespace Slotmachine
             }
             */
         }
+        public void InitWinLines()
+        {
+            winlines = new List<Coords[]>();
+            //line 1
+            winlines.Add(new Coords[] { new Coords(1, 0), new Coords(1, 1), new Coords(1, 2), new Coords(1, 3), new Coords(1, 4) });
+            //line 2
+            winlines.Add(new Coords[] { new Coords(0, 0), new Coords(0, 1), new Coords(0, 2), new Coords(0, 3), new Coords(0, 4) });
+            //line 3
+            winlines.Add(new Coords[] { new Coords(2, 0), new Coords(2, 1), new Coords(2, 2), new Coords(2, 3), new Coords(2, 4) });
+
+            //line 4
+            winlines.Add(new Coords[] { new Coords(0, 0), new Coords(1, 1), new Coords(2, 2), new Coords(1, 3), new Coords(0, 4) });
+            //line 5
+            winlines.Add(new Coords[] { new Coords(2, 0), new Coords(1, 1), new Coords(0, 2), new Coords(1, 3), new Coords(2, 4) });
+
+            //line 6
+            winlines.Add(new Coords[] { new Coords(0, 0), new Coords(1, 1), new Coords(0, 2), new Coords(1, 3), new Coords(0, 4) });
+            //line 7
+            winlines.Add(new Coords[] { new Coords(1, 0), new Coords(2, 1), new Coords(1, 2), new Coords(2, 3), new Coords(1, 4) });
+            //line 8
+            winlines.Add(new Coords[] { new Coords(1, 0), new Coords(0, 1), new Coords(1, 2), new Coords(0, 3), new Coords(1, 4) });
+            //line 9
+            winlines.Add(new Coords[] { new Coords(2, 0), new Coords(1, 1), new Coords(2, 2), new Coords(1, 3), new Coords(2, 4) });
+
+            //line 10
+            winlines.Add(new Coords[] { new Coords(0, 0), new Coords(1, 1), new Coords(2, 2), new Coords(2, 3), new Coords(2, 4) });
+        }
         private void button1_MouseClick(object sender, MouseEventArgs e)
         {
             Spin();
         }
         public async void Spin()
         {
+
             //Clear previous spin
             foreach (KeyValuePair<int, PictureBox> item in tiles)
             {
                 item.Value.Image = Image.FromFile("loading.jpg");
             }
-            board = new Symbol[5, 3];
+            board = new Symbol[3, 5];
 
             //Generate next roll. i = coloumn
             for (int i = 0; i < 5; i++)
@@ -119,17 +153,79 @@ namespace Slotmachine
                 int ticket = rand.Next(0, tickets.Count());
                 Symbol symbol = tickets[ticket];
                 tiles[1 + i].Image = Image.FromFile(symbol.Name + ".jpg");
-                //board[i, i + 1] = symbol;
+                board[0, i] = symbol;
 
                 ticket = rand.Next(0, tickets.Count());
                 symbol = tickets[ticket];
                 tiles[6 + i].Image = Image.FromFile(symbol.Name + ".jpg");
+                board[1, i] = symbol;
 
                 ticket = rand.Next(0, tickets.Count());
                 symbol = tickets[ticket];
                 tiles[11 + i].Image = Image.FromFile(symbol.Name + ".jpg");
+                board[2, i] = symbol;
                 await Task.Delay(100);
             }
+
+            //console log
+            for (int j = 0; j < 3 ; j++)
+            {
+                for (int k = 0; k < 5; k++)
+                {
+                    //Console.Write(board[j,k].Name+"\t");
+                    Console.Write(String.Format("{0,-10}", board[j, k].Name));
+                }
+                Console.WriteLine();
+            }
+
+            //payout lines
+            int lineIndex = 1;
+            double totalPayout = 0;
+            foreach (var item in winlines)
+            {
+                int comboLength = 1;
+                Symbol comboSymbol = board[item[0].X, item[0].Y];
+                bool inACombo = true;
+                for (int i = 1; i < item.Length; i++)
+                {
+                    //Console.Write(board[item[i].X, item[i].Y].Name);
+                    if (inACombo && board[item[i].X, item[i].Y] == comboSymbol)
+                    {
+                        comboLength++;
+                    }
+                    else
+                    {
+                        inACombo = false;
+                    }
+                }
+                Console.WriteLine("Line " + lineIndex);
+                Console.WriteLine("Combo Symbbol:{0}, Combo length: {1}", comboSymbol.Name, comboLength);
+                double linePayout = 0;
+                switch (comboLength)
+                {
+                    case 1:
+                        break;
+                    case 2:
+                        linePayout = bet * 1.00 * comboSymbol.Payout2; 
+                        break;
+                    case 3:
+                        linePayout = bet * 1.00 * comboSymbol.Payout3;
+                        break;
+                    case 4:
+                        linePayout = bet * 1.00 * comboSymbol.Payout4;
+                        break;
+                    case 5:
+                        linePayout = bet * 1.00 * comboSymbol.Payout5;
+                        break;
+                    default:
+                        break;
+                }
+                Console.WriteLine("Line payout: " + linePayout);
+                totalPayout += linePayout;
+                Console.WriteLine();
+                lineIndex++;
+            }
+            Console.WriteLine("Total win: " + totalPayout);
         }
     }
 }
